@@ -1,11 +1,20 @@
 Package: lastfmr
-Version: 0.0.0.9000
 Title: An R interface to the Last.fm API
-Description: An R interface to the Last.fm API
+Version: 0.0.0.9000
 Authors@R: person("Devon", "Shurick", , "dshurick@gmail.com", c("aut", "cre"))
+Description: An R interface to the Last.fm API.
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-ByteCompile: true
 URL: https://github.com/dshurick/lastfmr
 BugReports: https://github.com/dshurick/lastfmr/issues
+Imports: 
+    rlang (>= 0.1.2)
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
+Suggests: 
+    testthat,
+    covr
+Depends: 
+    R (>= 3.1)
