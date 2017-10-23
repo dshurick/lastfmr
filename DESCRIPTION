@@ -2,7 +2,7 @@ Package: lastfmr
 Title: An R interface to the Last.fm API
 Version: 0.0.0.9000
 Authors@R: person("Devon", "Shurick", , "dshurick@gmail.com", c("aut", "cre"))
-Description: An R interface to the Last.fm API
+Description: An R interface to the Last.fm API.
 License: GPL-3
 URL: https://github.com/dshurick/lastfmr
 BugReports: https://github.com/dshurick/lastfmr/issues
