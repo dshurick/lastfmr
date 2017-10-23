@@ -1,9 +1,11 @@
 Package: lastfmr
 Version: 0.0.0.9000
-Title: What the Package Does (one line, title case)
-Description: What the package does (one paragraph).
-Authors@R: person("First", "Last", , "first.last@example.com", c("aut", "cre"))
-License: What license it uses
+Title: An R interface to the Last.fm API
+Description: An R interface to the Last.fm API
+Authors@R: person("Devon", "Shurick", , "dshurick@gmail.com", c("aut", "cre"))
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
+URL: https://github.com/dshurick/lastfmr
+BugReports: https://github.com/dshurick/lastfmr/issues
