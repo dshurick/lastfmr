@@ -9,11 +9,11 @@
 #' @md
 #' @name tidyeval
 #' @keywords internal
-#' @aliases          quo quos enquo sym syms ensym expr exprs enexpr
+#' @aliases          quo quos enquo sym syms expr exprs enexpr
 #' @importFrom rlang quo quos enquo
 #' @export           quo quos enquo
-#' @importFrom rlang sym syms ensym
-#' @export           sym syms ensym
+#' @importFrom rlang sym syms
+#' @export           sym syms
 #' @importFrom rlang expr exprs enexpr
 #' @export           expr exprs enexpr
 NULL
