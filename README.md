@@ -3,7 +3,7 @@
 lastfmr
 =======
 
-[![Travis build status](https://travis-ci.org/dshurick/lastfmr.svg?branch=master)](https://travis-ci.org/dshurick/lastfmr)
+[![Travis build status](https://travis-ci.org/dshurick/lastfmr.svg?branch=master)](https://travis-ci.org/dshurick/lastfmr) [![Coverage status](https://codecov.io/gh/dshurick/lastfmr/branch/master/graph/badge.svg)](https://codecov.io/github/dshurick/lastfmr?branch=develop)
 
 The goal of lastfmr is to ...
 
