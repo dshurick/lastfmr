@@ -12,7 +12,11 @@ Imports:
     httr,
     jsonlite,
     rlang (>= 0.1.2),
-    checkmate
+    checkmate,
+    dplyr,
+    pbapply,
+    tibble,
+    magrittr
 Suggests: 
     covr,
     testthat
