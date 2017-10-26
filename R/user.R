@@ -1,7 +1,7 @@
 #' Get Albums with Most Plays for User
 #'
-#' @param api_key (string; Required) : A Last.fm API key.
-#' @param user (string; Required) : The user name to fetch top albums for.
+#' @param api_key (apiAccount; Required) : A Last.fm API key.
+#' @param user (apiUser; Required) : The user name to fetch top albums for.
 #' @param period (string; Optional) : The time period over which to retrieve
 #'   top albums for. Must be one of
 #'   \code{{overall, 7day, 1month, 3month, 6month, 12month}}
@@ -10,7 +10,7 @@
 #' @param page (int; Optional) : The page number to fetch. Defaults to first
 #'   page.
 #'
-#' @return parsed JSON
+#' @return A \code{\link[tibble]{tibble}} of results
 #' @export
 userGetTopAlbums <- function(api_key,
                              user,
@@ -27,7 +27,7 @@ userGetTopAlbums <- function(api_key,
   coll = checkmate::makeAssertCollection()
 
   checkmate::assert_class(api_key, classes = c("apiAccount"), add = coll)
-  checkmate::assert_string(user, add = coll)
+  checkmate::assert_class(user, classes = c("apiUser"), add = coll)
   checkmate::assert_int(limit,
                         lower = 1,
                         null.ok = TRUE,
@@ -42,8 +42,8 @@ userGetTopAlbums <- function(api_key,
     resp <- makeCall(
       query = list(
         method = "user.gettopalbums",
-        api_key = api_key,
-        user = user,
+        api_key = api_key$api_key,
+        user = user$user,
         period = period,
         limit = limit,
         page = page,
@@ -56,12 +56,226 @@ userGetTopAlbums <- function(api_key,
     }
   )
 
-  parsed <-
-    jsonlite::fromJSON(httr::content(resp, "text"))
+  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)
 
-  return(parsed)
+  totalPages <-
+        as.integer(parsed$topalbums$`@attr`$totalPages)
+
+
+  pages <- pbapply::pblapply(1:totalPages, function(pageNum) {
+    tryCatch(
+      resp <- makeCall(
+        query = list(
+          method = "user.gettopalbums",
+          api_key = api_key$api_key,
+          user = user$user,
+          period = period,
+          limit = limit,
+          page = pageNum,
+          format = "json"
+        )
+      ),
+      error = function(e) {
+        print("Error from within userGetTopAlbums().")
+        e
+      }
+    )
+
+    parsed <-
+      jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)
+
+    album.dtf <- parsed$topalbums$album %>%
+      tibble::as_tibble() %>%
+      dplyr::select(name,
+                    playcount,
+                    mbid,
+                    artist.name,
+                    artist.mbid,
+                    rank = `@attr.rank`)
+
+    album.dtf
+  })
+
+  albums <- dplyr::bind_rows(pages)
+
+  return(albums)
 
 }
+
+
+#' Get Artists with Most Plays for User
+#'
+#' @param api_key (apiAccount; Required) : A Last.fm API key.
+#' @param user (apiUser; Required) : The user name to fetch top albums for.
+#' @param period (string; Optional) : The time period over which to retrieve
+#'   top albums for. Must be one of
+#'   \code{{overall, 7day, 1month, 3month, 6month, 12month}}
+#' @param limit (int; Optional) : The number of results to fetch per page.
+#'   Defaults to 50.
+#' @param page (int; Optional) : The page number to fetch. Defaults to first
+#'   page.
+#'
+#' @return A \code{\link[tibble]{tibble}} of results
+#' @export
+userGetTopArtists <- function(api_key,
+                              user,
+                              period = c("overall",
+                                        "7day",
+                                        "1month",
+                                        "3month",
+                                        "6month",
+                                        "12month"),
+                              limit = NULL,
+                              page = NULL) {
+  period = match.arg(period)
+
+  coll = checkmate::makeAssertCollection()
+
+  checkmate::assert_class(api_key, classes = c("apiAccount"), add = coll)
+  checkmate::assert_class(user, classes = c("apiUser"), add = coll)
+  checkmate::assert_int(limit,
+                        lower = 1,
+                        null.ok = TRUE,
+                        add = coll)
+  checkmate::assert_int(page,
+                        lower = 1,
+                        null.ok = TRUE,
+                        add = coll)
+  checkmate::reportAssertions(coll)
+
+  tryCatch(
+    resp <- makeCall(
+      query = list(
+        method = "user.gettopartists",
+        api_key = api_key$api_key,
+        user = user$user,
+        period = period,
+        limit = limit,
+        page = page,
+        format = "json"
+      )
+    ),
+    error = function(e) {
+      print("Error from within userGetTopAlbums().")
+      e
+    }
+  )
+
+  parsed <- jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)
+
+  totalPages <-
+    as.integer(parsed$topartists$`@attr`$totalPages)
+
+
+  pages <- pbapply::pblapply(1:totalPages, function(pageNum) {
+    tryCatch(
+      resp <- makeCall(
+        query = list(
+          method = "user.gettopartists",
+          api_key = api_key$api_key,
+          user = user$user,
+          period = period,
+          limit = limit,
+          page = pageNum,
+          format = "json"
+        )
+      ),
+      error = function(e) {
+        print("Error from within userGetTopAlbums().")
+        e
+      }
+    )
+
+    parsed <-
+      jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)
+
+    artist.dtf <- parsed$topartists$artist %>%
+      tibble::as_tibble() %>%
+      dplyr::select(name,
+                    playcount,
+                    mbid,
+                    rank = `@attr.rank`)
+
+    artist.dtf
+  })
+
+  artists <- dplyr::bind_rows(pages)
+
+  return(artists)
+
+}
+
+
+#' Title
+#'
+#' @param artist (character; Required) : The artist to search for.
+#' @param api_key (apiAccount; Required) : A Last.fm API key.
+#' @param user (apiUser; Required) : The user name to fetch top albums for.
+#' @param limit (int; Optional) : The number of results to fetch per page.
+#'   Defaults to 50.
+#' @param page (int; Optional) : The page number to fetch. Defaults to first
+#'   page.
+#'
+#' @return A \code{\link[tibble]{tibble}} of results
+#' @export
+userGetArtistTracks <- function(artist,
+                                api_key,
+                                user,
+                                limit = NULL,
+                                page = NULL) {
+  coll = checkmate::makeAssertCollection()
+
+  checkmate::assert_class(api_key, classes = c("apiAccount"), add = coll)
+  checkmate::assert_class(user, classes = c("apiUser"), add = coll)
+  checkmate::assert_string(artist, add = coll)
+  checkmate::assert_int(page,
+                        lower = 1,
+                        null.ok = TRUE,
+                        add = coll)
+  checkmate::reportAssertions(coll)
+
+  tracks <- NULL
+
+  for (pageNum in 1:200) {
+
+    tryCatch(
+      resp <- makeCall(
+        query = list(
+          method = "user.getartisttracks",
+          api_key = api_key$api_key,
+          user = user$user,
+          artist = artist,
+          limit = 200,
+          page = pageNum,
+          format = "json"
+        )
+      ),
+      error = function(e) {
+        print("Error from within userGetTopAlbums().")
+        e
+      }
+    )
+
+    parsed <-
+      jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)
+
+    if (!length(parsed$artisttracks$track))
+      break()
+
+    tracks.dtf <- parsed$artisttracks$track %>%
+      tibble::as_tibble() %>%
+      dplyr::select(name,
+                    mbid,
+                    artist = `artist.#text`,
+                    album = `album.#text`)
+
+    tracks <- dplyr::bind_rows(tracks, tracks.dtf)
+  }
+
+  return(tracks)
+
+}
+
 
 #' Perform an HTTP GET Request.
 #'
