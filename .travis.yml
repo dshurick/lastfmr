@@ -1,19 +1,23 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+# Sample .travis.yml for R projects.
+#
+# See README.md for instructions, or for more configuration options,
+# see the wiki:
+#   https://github.com/craigcitro/r-travis/wiki
 
-language: r
-sudo: false
-cache: packages
+language: c
 
-r:
- - 3.1
- - 3.2
- - oldrel
- - release
- - devel
+before_install:
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+install:
+  - ./travis-tool.sh install_deps
+script: ./travis-tool.sh run_tests
 
-# We need to install BiocInstaller for testing Bioconductor packages
-bioc_required: true
+after_failure:
+  - ./travis-tool.sh dump_logs
 
-# Only report coverage for the release version
-after_success:
-  - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
+notifications:
+  email:
+    on_success: change
+    on_failure: change
