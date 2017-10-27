@@ -18,7 +18,8 @@ Imports:
     magrittr
 Suggests: 
     covr,
-    testthat
+    testthat,
+    devtools
 ByteCompile: true
 Encoding: UTF-8
 LazyData: true
