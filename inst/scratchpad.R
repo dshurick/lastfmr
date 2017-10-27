@@ -7,15 +7,13 @@
 api_key <- apiAccount("31726802b8274ac60ae5526b9fb54703")
 user <- apiUser("dshurick", api_key)
 
-albums <- userGetTopAlbums(act,
-                           usr,
-                           limit = 1000000)
+albums <- userGetTopAlbums(act, usr, limit = 200)
 
-artists <- userGetTopArtists(act,
-                             usr,
-                             limit = 200)
+artists <- userGetTopArtists(act, usr, limit = 200)
 
 tracks <- userGetArtistTracks("Radiohead", api_key = api_key, user = user)
+
+
 
 tracks %>%
   count(artist, album, name, sort = TRUE)
