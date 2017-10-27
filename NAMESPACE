@@ -2,6 +2,7 @@
 
 export("%<>%")
 export("%>%")
+export(albumGetInfo)
 export(apiAccount)
 export(apiUser)
 export(enexpr)

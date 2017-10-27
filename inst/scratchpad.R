@@ -1,5 +1,5 @@
-library(jsonlite)
-library(httr)
+# library(jsonlite)
+# library(httr)
 
 # api.key <- "31726802b8274ac60ae5526b9fb54703"
 # shared.secret <- "193d5d983e42168ce3277db4e03f9a3d"

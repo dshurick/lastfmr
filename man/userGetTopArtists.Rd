@@ -2,7 +2,7 @@
 % Please edit documentation in R/user.R
 \name{userGetTopArtists}
 \alias{userGetTopArtists}
-\title{Get Artists with Most Plays for User}
+\title{Get the top artists listened to by a user}
 \usage{
 userGetTopArtists(api_key, user, period = c("overall", "7day", "1month",
   "3month", "6month", "12month"), limit = NULL, page = NULL)
@@ -26,5 +26,9 @@ page.}
 A \code{\link[tibble]{tibble}} of results
 }
 \description{
-Get Artists with Most Plays for User
+Get the top artists listened to by a user. You can stipulate a time period.
+Sends the overall chart by default.
+}
+\references{
+See \url{https://www.last.fm/api/show/user.getArtistTracks}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/user.R
 \name{userGetArtistTracks}
 \alias{userGetArtistTracks}
-\title{Title}
+\title{Get a list of tracks scrobbled by a given last.fm user}
 \usage{
 userGetArtistTracks(artist, api_key, user, limit = NULL, page = NULL)
 }
@@ -23,5 +23,10 @@ page.}
 A \code{\link[tibble]{tibble}} of results
 }
 \description{
-Title
+Get a list of tracks by a given artist scrobbled by this user, including
+scrobble time. Can be limited to specific timeranges, defaults to all
+time.
+}
+\references{
+See \url{https://www.last.fm/api/show/user.getArtistTracks}
 }
