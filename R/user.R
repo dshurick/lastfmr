@@ -62,7 +62,7 @@ userGetTopAlbums <- function(api_key,
         as.integer(parsed$topalbums$`@attr`$totalPages)
 
 
-  pages <- pbapply::pblapply(1:totalPages, function(pageNum) {
+  pages <- lapply(1:totalPages, function(pageNum) {
     tryCatch(
       resp <- makeCall(
         query = list(
@@ -167,7 +167,7 @@ userGetTopArtists <- function(api_key,
     as.integer(parsed$topartists$`@attr`$totalPages)
 
 
-  pages <- pbapply::pblapply(1:totalPages, function(pageNum) {
+  pages <- lapply(1:totalPages, function(pageNum) {
     tryCatch(
       resp <- makeCall(
         query = list(
@@ -360,4 +360,13 @@ apiUser <- function(user, apiact) {
 
   structure(list(user = user),
             class = "apiUser")
+}
+
+deps <-
+  devtools::dev_package_deps(dependencies = NA)
+devtools::install_deps(dependencies = TRUE)
+if (!all(deps$package %in% installed.packages())) {
+  message("missing: ", paste(setdiff(deps$package, installed.packages()), collapse =
+                               ", "))
+  q(status = 1, save = "no")
 }
