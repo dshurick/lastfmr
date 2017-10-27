@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 ```
 # lastfmr
 
-[![Travis build status](https://travis-ci.org/dshurick/lastfmr.svg?branch=feature/user)](https://travis-ci.org/dshurick/lastfmr?branch=feature/user)
+[![Build Status](https://travis-ci.org/dshurick/lastfmr.svg?branch=feature%2Fuser)](https://travis-ci.org/dshurick/lastfmr)
 [![Coverage status](https://codecov.io/gh/dshurick/lastfmr/branch/feature/user/graph/badge.svg)](https://codecov.io/github/dshurick/lastfmr?branch=feature/user)
 
 The goal of lastfmr is to ...
