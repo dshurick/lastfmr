@@ -3,7 +3,10 @@
 lastfmr
 =======
 
-[![Travis build status](https://travis-ci.org/dshurick/lastfmr.svg?branch=feature/user)](https://travis-ci.org/dshurick/lastfmr?branch=feature/user) [![Coverage status](https://codecov.io/gh/dshurick/lastfmr/branch/feature/user/graph/badge.svg)](https://codecov.io/github/dshurick/lastfmr?branch=feature/user)
+<!-- [![Build Status](https://travis-ci.org/dshurick/lastfmr.svg?branch=feature%2Fuser)](https://travis-ci.org/dshurick/lastfmr) -->
+<!-- [![Coverage status](https://codecov.io/gh/dshurick/lastfmr/branch/feature/user/graph/badge.svg)](https://codecov.io/github/dshurick/lastfmr?branch=feature/user) -->
+<!--html_preserve-->
+<a href="https://travis-ci.org/dshurick/lastfmr"> <img src="https://travis-ci.org/dshurick/lastfmr.svg?branch=feature%2Fuser" alt="Build Status" align="middle"> </a> <a href="https://codecov.io/github/dshurick/lastfmr?branch=feature/user"> <img src="https://codecov.io/gh/dshurick/lastfmr/branch/feature/user/graph/badge.svg" alt="Coverage status" style="width: 80px; height: 80px" align="middle"> </a> <a href="https://codecov.io/gh/dshurick/lastfmr/branch/feature%2Fuser"> <img src="https://codecov.io/gh/dshurick/lastfmr/branch/feature%2Fuser/graphs/sunburst.svg" alt="coverage status" style="width: 80px; height: 80px" align="middle"> </a> <!--/html_preserve-->
 
 The goal of lastfmr is to ...
 
