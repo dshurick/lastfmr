@@ -5,7 +5,7 @@
 #'
 #' @param artist (character; Required, unless mbid) : The artist name.
 #' @param album (character; Required, unless mbid) : The album name.
-#' @param mbid (character; Optional) : The musicbrainz id for the album
+#' @param album_mbid (character; Optional) : The musicbrainz id for the album
 #' @param autocorrect (logical; Optional) : Transform misspelled artist
 #'   names into correct artist names, returning the correct version instead.
 #'   The corrected artist name will be returned in the response.
@@ -25,15 +25,21 @@
 albumGetInfo <- function(api_key,
                          artist = NULL,
                          album = NULL,
-                         mbid = NULL,
+                         album_mbid = NULL,
                          autocorrect = TRUE,
                          user = NULL,
                          lang = NULL) {
   coll = checkmate::makeAssertCollection()
 
-  assertAlbum(mbid = mbid, artist = artist, album = album, add = coll)
+  checkmate::assert_true(!(is.null(album_mbid) &&
+                             (is.null(artist) || is.null(album))),
+                         .var.name = "Provide album mbid or artist & album.",
+                         add = coll)
   checkmate::assert_class(api_key, classes = c("apiAccount"), add = coll)
-  checkmate::assert_class(user, classes = c("apiUser"), add = coll)
+  checkmate::assert_class(user,
+                          classes = c("apiUser"),
+                          null.ok = TRUE,
+                          add = coll)
   checkmate::assert_string(artist, null.ok = TRUE, add = coll)
   checkmate::assert_string(album, null.ok = TRUE, add = coll)
   checkmate::assert_flag(autocorrect, null.ok = TRUE, add = coll)
@@ -46,7 +52,7 @@ albumGetInfo <- function(api_key,
       user = user$user,
       artist = artist,
       album = album,
-      mbid = mbid,
+      mbid = album_mbid,
       autocorrect = if (autocorrect)
         1
       else
@@ -58,13 +64,15 @@ albumGetInfo <- function(api_key,
   parsed <-
     jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)
 
+  if (is.null(parsed[["album"]][["mbid"]])) parsed[["album"]][["mbid"]] <- ""
+
   tracks <- parsed$album$tracks$track %>%
-    dplyr::select(name,
-                  duration,
+    dplyr::select(track_name = name,
+                  track_duration = duration,
                   track_num = `@attr.rank`,
                   artist_mbid = artist.mbid) %>%
     dplyr::mutate(
-      duration = as.integer(duration),
+      track_duration = as.integer(track_duration),
       track_num = as.integer(track_num),
       artist_name = parsed$album$artist,
       album_name = parsed$album$name,

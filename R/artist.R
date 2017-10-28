@@ -1,4 +1,4 @@
-#' artistGetTopTracks # TODO
+#' Get the top tracks by an artist on Last.fm, ordered by popularity
 #'
 #' @param api_key FILLME # TODO
 #' @param artist FILLME # TODO
@@ -31,18 +31,19 @@ artistGetTopTracks <- function(api_key,
                         null.ok = TRUE,
                         add = coll)
   checkmate::reportAssertions(coll)
-  # resp <- makeCall(
-  #   query = list(
-  #     method = "artist.gettoptracks",
-  #     api_key = api_key$api_key,
-  #     artist = artist,
-  #     mbid = mbid,
-  #     limit = limit,
-  #     page = page,
-  #     autocorrect = autocorrect,
-  #     format = "json"
-  #   )
-  # )
+
+  resp <- makeCall(
+    query = list(
+      method = "artist.gettoptracks",
+      api_key = api_key$api_key,
+      artist = artist,
+      mbid = mbid,
+      limit = limit,
+      page = page,
+      autocorrect = autocorrect,
+      format = "json"
+    )
+  )
   #
   # parsed <-
   #   jsonlite::fromJSON(httr::content(resp, as = "text"), flatten = TRUE)

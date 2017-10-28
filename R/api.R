@@ -9,17 +9,23 @@ makeCall <- function(query = NULL) {
   coll = checkmate::makeAssertCollection()
   checkmate::assert_list(query, null.ok = TRUE, add = coll)
   checkmate::reportAssertions(coll)
+
   url <- httr::modify_url("http://ws.audioscrobbler.com/2.0/",
                           query = query)
   resp <- httr::GET(url)
 
-  if (httr::http_error(resp)) {
-    message(httr::http_status(resp)$message)
-    stop("Request returned error code.")
+  content <- httr::content(resp)
+
+  if (!is.null(content[["error"]])) {
+    message("Here are the contents of the query: ")
+    utils::str(query)
+    stop(content[["message"]])
   }
+
   if (httr::http_type(resp) != "application/json") {
     stop("API did not return json", call. = FALSE)
   }
+
   resp
 }
 
@@ -55,31 +61,66 @@ apiAccount <- function(api_key) {
 #' Make an \code{apiUser} object.
 #'
 #' @param user A string representing a user's account on Last.fm
-#' @param apiact An object returned from \code{\link{apiAccount}}
+#' @param api_key An object returned from \code{\link{apiAccount}}
 #'
 #' @return An \code{apiUser}.
 #' @export
-apiUser <- function(user, apiact) {
+apiUser <- function(user, api_key) {
   coll = checkmate::makeAssertCollection()
   checkmate::assert_string(user, add = coll)
-  checkmate::assert_class(apiact, classes = c("apiAccount"), add = coll)
+  checkmate::assert_class(api_key, classes = c("apiAccount"), add = coll)
   checkmate::reportAssertions(coll)
 
-  tryCatch(
-    resp <- makeCall(
-      query = list(
-        method = "user.getinfo",
-        api_key = apiact$api_key,
-        user = user,
-        format = "json"
-      )
-    ),
-    error = function(e) {
-      print("Unable to create apiUser.")
-      e
-    }
-  )
+  resp <- makeCall(query = list(
+    method = "user.getinfo",
+    api_key = api_key$api_key,
+    user = user,
+    format = "json"
+  ))
+
+  content <- httr::content(resp)
+  if (!is.null(content[["error"]]))
+    stop(content[["message"]])
 
   structure(list(user = user),
             class = "apiUser")
+}
+
+#' Pull all Last.fm data for a user
+#'
+#' @param api_key (apiAccount; Required) : A Last.fm API key.
+#' @param user (apiUser; Optional) : The username for the context of the
+#'   request. If supplied, the user's playcount for this album is included
+#'  in the response.
+#'
+#' @return A \code{\link[tibble]{tibble}} of results.
+#' @export
+pullUserData <- function(api_key, user) {
+  coll = checkmate::makeAssertCollection()
+
+  checkmate::assert_class(
+    api_key,
+    classes = c("apiAccount"),
+    add = coll
+  )
+
+  checkmate::assert_class(
+    user,
+    classes = c("apiUser"),
+    null.ok = TRUE,
+    add = coll
+  )
+  checkmate::reportAssertions(coll)
+
+  albums <- userGetTopAlbums(api_key, user, limit = 200)
+
+  album_tracks <- albums %>%
+    dplyr::slice(1:20) %>%
+    dplyr::rowwise() %>%
+    dplyr::do(albumGetInfo(
+      api_key,
+      album = .$album_name,
+      artist = .$artist_name
+    ))
+
 }

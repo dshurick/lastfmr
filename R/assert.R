@@ -16,11 +16,26 @@ checkAlbum = function(mbid, artist, album) {
 }
 
 assertAlbum <-
-  checkmate::makeAssertionFunction(
-    check.fun = checkAlbum
-  )
+  function(mbid,
+           artist,
+           album,
+           .var.name = "album",
+           add = NULL) {
+    res <- checkAlbum(mbid, artist, album)
+    checkmate::makeAssertion(mbid, res, .var.name, add)
+  }
+
 
 assertArtist <-
-  checkmate::makeAssertionFunction(
-    check.fun = checkArtist
-  )
+  function(mbid,
+           artist,
+           .var.name = "artist",
+           add = NULL) {
+    res <- checkArtist(mbid, artist)
+    checkmate::makeAssertion(mbid, res, .var.name, add)
+  }
+
+# assertArtist <-
+#   checkmate::makeAssertionFunction(
+#     check.fun = checkArtist
+#   )
