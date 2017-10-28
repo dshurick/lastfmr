@@ -7,7 +7,7 @@
 userGetArtistTracks(artist, api_key, user, limit = NULL, page = NULL)
 }
 \arguments{
-\item{artist}{(character; Required) : The artist to search for.}
+\item{artist}{(character; Required unless mbid) : The artist name.}
 
 \item{api_key}{(apiAccount; Required) : A Last.fm API key.}
 
@@ -29,4 +29,9 @@ time.
 }
 \references{
 See \url{https://www.last.fm/api/show/user.getArtistTracks}
+}
+\seealso{
+Other user: \code{\link{userGetTopAlbums}},
+  \code{\link{userGetTopArtists}},
+  \code{\link{userGetTopTracks}}, \code{\link{user}}
 }

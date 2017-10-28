@@ -2,7 +2,7 @@
 % Please edit documentation in R/artist.R
 \name{artistGetTopTracks}
 \alias{artistGetTopTracks}
-\title{artistGetTopTracks # TODO}
+\title{Get the top tracks by an artist on Last.fm, ordered by popularity}
 \usage{
 artistGetTopTracks(api_key, artist = NULL, mbid = NULL,
   autocorrect = TRUE, limit = NULL, page = NULL)
@@ -24,5 +24,5 @@ artistGetTopTracks(api_key, artist = NULL, mbid = NULL,
 FILLME # TODO
 }
 \description{
-artistGetTopTracks # TODO
+Get the top tracks by an artist on Last.fm, ordered by popularity
 }

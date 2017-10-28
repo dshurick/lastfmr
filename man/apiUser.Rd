@@ -4,12 +4,12 @@
 \alias{apiUser}
 \title{Make an \code{apiUser} object.}
 \usage{
-apiUser(user, apiact)
+apiUser(user, api_key)
 }
 \arguments{
 \item{user}{A string representing a user's account on Last.fm}
 
-\item{apiact}{An object returned from \code{\link{apiAccount}}}
+\item{api_key}{An object returned from \code{\link{apiAccount}}}
 }
 \value{
 An \code{apiUser}.

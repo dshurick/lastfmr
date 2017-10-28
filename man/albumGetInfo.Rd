@@ -4,7 +4,7 @@
 \alias{albumGetInfo}
 \title{Get the metadata and tracklist for an album}
 \usage{
-albumGetInfo(api_key, artist = NULL, album = NULL, mbid = NULL,
+albumGetInfo(api_key, artist = NULL, album = NULL, album_mbid = NULL,
   autocorrect = TRUE, user = NULL, lang = NULL)
 }
 \arguments{
@@ -14,7 +14,7 @@ albumGetInfo(api_key, artist = NULL, album = NULL, mbid = NULL,
 
 \item{album}{(character; Required, unless mbid) : The album name.}
 
-\item{mbid}{(character; Optional) : The musicbrainz id for the album}
+\item{album_mbid}{(character; Optional) : The musicbrainz id for the album}
 
 \item{autocorrect}{(logical; Optional) : Transform misspelled artist
 names into correct artist names, returning the correct version instead.

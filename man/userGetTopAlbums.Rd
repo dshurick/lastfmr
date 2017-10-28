@@ -32,3 +32,8 @@ Sends the overall chart by default.
 \references{
 See \url{https://www.last.fm/api/show/user.getTopAlbums}
 }
+\seealso{
+Other user: \code{\link{userGetArtistTracks}},
+  \code{\link{userGetTopArtists}},
+  \code{\link{userGetTopTracks}}, \code{\link{user}}
+}
